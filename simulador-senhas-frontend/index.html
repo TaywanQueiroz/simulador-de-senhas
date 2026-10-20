@@ -5,13 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulador de senha de segurança</title>
   <link rel="stylesheet" href="css/style.css">
-  
+
 </head>
 <body>
   <main class="card">
 <h1>Criar conta</h1>
 
 <p>Digite uma senha e veja o quanto ela resistiria a um ataque de força de bruta.</p>
+
+<div class="campo">
+  <label for="usuario">Usuário ou e-mail</label>
+  <input type="text" id="usuario" placeholder="seu@email.com" autocomplete="off">
+</div>
+ <div class="campo">
+  <label for="senha">Senha</label>
+<div class="senha-wrap">
+  <input type="password" id="senha" maxlength="128" placeholder="Digite sua senha" autocomplete="new-password">
+  <button type="button" id="toggle">Mostrar</button>
+</div>
+
+ </div>
+
+ <button type="button" id="enviar" disabled>Criar conta</button>
 
   </main>
 
