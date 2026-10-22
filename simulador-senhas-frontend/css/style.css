@@ -48,3 +48,66 @@ h1 {
   font-size: 0.9rem;
   line-height: 1.4;
 }
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: 2px solid var(--destaque);
+  outline-offset: 1px;
+}
+
+.senha-wrap {
+  position: relative;
+}
+
+.senha-wrap input {
+  padding-right: 84px;
+}
+
+#toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  color: var(--destaque);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+#enviar {
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--destaque);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#enviar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
