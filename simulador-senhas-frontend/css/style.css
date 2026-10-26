@@ -5,6 +5,11 @@
   --texto: #e8ecf3;
   --muted: #8a94a6;
   --destaque: #4f8cff;
+  --muito-fraco: #ef4444;
+  --fraco: #f97316;
+  --medio: #eab308;
+  --forte: #84cc16;
+  --muito-forte: #22c55e;
 }
 
 * {
