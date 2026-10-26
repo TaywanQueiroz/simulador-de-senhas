@@ -8,15 +8,11 @@
   </head>
 
   <body>
-    <main class="card" id="card" data-nivel="MUITO_FRACO"> </main>
-    <main class="card" id="card" data-nivel="FRACO"> </main>
-    <main class="card" id="card" data-nivel="MEDIO"> </main>
-    <main class="card" id="card" data-nivel="FORTE"> </main>
-    <main class="card" id="card" data-nivel="MUITO_FORTE"> </main>
+    <main class="card" id="card" data-nivel="vazio">
       <h1>Criar conta</h1>
 
       <p>
-        Digite uma senha e veja o quanto ela resistiria a um ataque de força de
+        Digite uma senha e veja o quanto ela resistiria a um ataque de força
         bruta.
       </p>
 
@@ -29,6 +25,7 @@
           autocomplete="off"
         />
       </div>
+
       <div class="campo">
         <label for="senha">Senha</label>
         <div class="senha-wrap">
@@ -41,50 +38,48 @@
           />
           <button type="button" id="toggle">Mostrar</button>
         </div>
-
-        <section class="resultado" aria-live="polite">
-          <div class="nivel-topo">
-            <span>Nível de segurança</span>
-            <strong id="badge">—</strong>
-          </div>
-
-          <div class="barra">
-            <div id="barra"></div>
-          </div>
-
-          <dl>
-            <div>
-              <dt>Comprimento (L)</dt>
-              <dd id="r-comprimento">—</dd>
-            </div>
-            <div>
-              <dt>Tipos de caractere</dt>
-              <dd class="chips" id="r-tipos">
-                <span data-t="digitos">0–9</span>
-                <span data-t="minusculas">a–z</span>
-                <span data-t="maiusculas">A–Z</span>
-                <span data-t="simbolos">#@!</span>
-              </dd>
-            </div>
-            <div>
-              <dt>Tamanho do alfabeto (N)</dt>
-              <dd id="r-alfabeto">—</dd>
-            </div>
-            <div>
-              <dt>Combinações possíveis</dt>
-              <dd id="r-combinacoes">—</dd>
-            </div>
-            <div>
-              <dt>Tempo estimado de força bruta</dt>
-              <dd id="r-tempo">—</dd>
-            </div>
-          </dl>
-        </section>
       </div>
+
+      <section class="resultado" aria-live="polite">
+        <div class="nivel-topo">
+          <span>Nível de segurança</span>
+          <strong id="badge">—</strong>
+        </div>
+
+        <div class="barra">
+          <div id="barra"></div>
+        </div>
+
+        <dl>
+          <div>
+            <dt>Comprimento (L)</dt>
+            <dd id="r-comprimento">—</dd>
+          </div>
+          <div>
+            <dt>Tipos de caractere</dt>
+            <dd class="chips" id="r-tipos">
+              <span data-t="digitos">0–9</span>
+              <span data-t="minusculas">a–z</span>
+              <span data-t="maiusculas">A–Z</span>
+              <span data-t="simbolos">#@!</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Tamanho do alfabeto (N)</dt>
+            <dd id="r-alfabeto">—</dd>
+          </div>
+          <div>
+            <dt>Combinações possíveis</dt>
+            <dd id="r-combinacoes">—</dd>
+          </div>
+          <div>
+            <dt>Tempo estimado de força bruta</dt>
+            <dd id="r-tempo">—</dd>
+          </div>
+        </dl>
+      </section>
 
       <button type="button" id="enviar" disabled>Criar conta</button>
     </main>
 
-    <script src="js/script.js"></script>
-  </body>
-</html>
+    <script
