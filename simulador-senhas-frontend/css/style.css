@@ -10,6 +10,7 @@
   --medio: #eab308;
   --forte: #84cc16;
   --muito-forte: #22c55e;
+  --cor-nivel: var(--borda);
 }
 
 * {
@@ -116,3 +117,102 @@ input:focus {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+.resultado {
+  background: var(--bg);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nivel-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+#badge {
+  color: var(--cor-nivel);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.barra {
+  height: 8px;
+  background: var(--borda);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+#barra {
+  height: 100%;
+  width: 0;
+  background: var(--cor-nivel);
+  transition:
+    width 0.3s,
+    background 0.3s;
+}
+
+dl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.88rem;
+}
+
+dt {
+  color: var(--muted);
+}
+
+dd {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.chips span {
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  border: 1px solid var(--borda);
+  color: var(--muted);
+  transition: 0.2s;
+}
+
+.chips span.ativo {
+  color: var(--texto);
+  border-color: var(--cor-nivel);
+  background: color-mix(in srgb, var(--cor-nivel) 18%, transparent);
+}
+
+/* cor do nível */
+.card[data-nivel="MUITO_FRACO"] { --cor-nivel: var(--muito-fraco); }
+.card[data-nivel="FRACO"]       { --cor-nivel: var(--fraco); }
+.card[data-nivel="MEDIO"]       { --cor-nivel: var(--medio); }
+.card[data-nivel="FORTE"]       { --cor-nivel: var(--forte); }
+.card[data-nivel="MUITO_FORTE"] { --cor-nivel: var(--muito-forte); }
+
+/* tamanho da barra */
+.card[data-nivel="MUITO_FRACO"] #barra { width: 20%; }
+.card[data-nivel="FRACO"]       #barra { width: 40%; }
+.card[data-nivel="MEDIO"]       #barra { width: 60%; }
+.card[data-nivel="FORTE"]       #barra { width: 80%; }
+.card[data-nivel="MUITO_FORTE"] #barra { width: 100%; }
