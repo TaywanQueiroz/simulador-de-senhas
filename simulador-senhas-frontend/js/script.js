@@ -2,6 +2,9 @@
 const campoSenha = document.getElementById("senha");
 const botaoToggle = document.getElementById("toggle");
 
+// ===== Constante do modelo (seção 9 do relatório) =====
+const V = 1e6; // tentativas por segundo
+
 // ===== Análise da senha =====
 function analisarTipos(senha) {
   return {
@@ -21,14 +24,30 @@ function calcularAlfabeto(tipos) {
   return n;
 }
 
+function calcularCombinacoes(N, L) {
+  return BigInt(N) ** BigInt(L);
+}
+
+function calcularTempo(C) {
+  return Number(C) / V;
+}
+
 // ===== Ouvindo o que a pessoa digita =====
 campoSenha.addEventListener("input", function () {
   const senha = campoSenha.value;
   const L = senha.length;
+
+  if (L === 0) {
+    console.log("campo vazio");
+    return;
+  }
+
   const tipos = analisarTipos(senha);
   const N = calcularAlfabeto(tipos);
+  const C = calcularCombinacoes(N, L);
+  const T = calcularTempo(C);
 
-  console.log("L =", L, "| N =", N, tipos);
+  console.log("L =", L, "| N =", N, "| C =", String(C), "| T =", T, "s");
 });
 
 // ===== Botão mostrar/ocultar senha =====
