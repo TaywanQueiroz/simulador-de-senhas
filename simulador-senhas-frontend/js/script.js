@@ -1,53 +1,102 @@
+// ===== Configuração =====
+const API_URL = "http://localhost:8080/api/analisar";
+
 // ===== Elementos da página =====
+const card = document.getElementById("card");
 const campoSenha = document.getElementById("senha");
 const botaoToggle = document.getElementById("toggle");
+const botaoEnviar = document.getElementById("enviar");
+const badge = document.getElementById("badge");
+const rComprimento = document.getElementById("r-comprimento");
+const rAlfabeto = document.getElementById("r-alfabeto");
+const rCombinacoes = document.getElementById("r-combinacoes");
+const rTempo = document.getElementById("r-tempo");
+const chips = document.querySelectorAll("#r-tipos span");
 
-// ===== Constante do modelo (seção 9 do relatório) =====
-const V = 1e6; // tentativas por segundo
+// Texto do badge para cada código de nível
+const NOMES = {
+  MUITO_FRACO: "Muito fraco",
+  FRACO: "Fraco",
+  MEDIO: "Médio",
+  FORTE: "Forte",
+  MUITO_FORTE: "Muito forte",
+};
 
-// ===== Análise da senha =====
-function analisarTipos(senha) {
-  return {
-    digitos: /[0-9]/.test(senha),
-    minusculas: /[a-z]/.test(senha),
-    maiusculas: /[A-Z]/.test(senha),
-    simbolos: /[^A-Za-z0-9]/.test(senha),
-  };
+// ===== Comunicação com o Java =====
+async function consultarAPI(senha) {
+  const resposta = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ senha: senha }),
+  });
+  if (!resposta.ok) {
+    throw new Error("Erro " + resposta.status);
+  }
+  return resposta.json();
 }
 
-function calcularAlfabeto(tipos) {
-  let n = 0;
-  if (tipos.digitos) n += 10;
-  if (tipos.minusculas) n += 26;
-  if (tipos.maiusculas) n += 26;
-  if (tipos.simbolos) n += 32;
-  return n;
+// ===== Atualizando a tela (sem nenhum cálculo) =====
+function exibirResultado(r) {
+  card.dataset.nivel = r.nivel;
+  badge.textContent = NOMES[r.nivel];
+  rComprimento.textContent = r.comprimento;
+  rAlfabeto.textContent = r.tamanhoAlfabeto;
+  rCombinacoes.textContent = r.combinacoes;
+  rTempo.textContent = r.tempoEstimado;
+
+  chips.forEach(function (chip) {
+    chip.classList.toggle("ativo", Boolean(r.tipos[chip.dataset.t]));
+  });
+
+  botaoEnviar.disabled = false;
 }
 
-function calcularCombinacoes(N, L) {
-  return BigInt(N) ** BigInt(L);
+function limparResultado() {
+  card.dataset.nivel = "vazio";
+  badge.textContent = "—";
+  rComprimento.textContent = "—";
+  rAlfabeto.textContent = "—";
+  rCombinacoes.textContent = "—";
+  rTempo.textContent = "—";
+  chips.forEach(function (chip) {
+    chip.classList.remove("ativo");
+  });
+  botaoEnviar.disabled = true;
 }
 
-function calcularTempo(C) {
-  return Number(C) / V;
+function exibirErro() {
+  limparResultado();
+  badge.textContent = "Sem conexão";
 }
 
 // ===== Ouvindo o que a pessoa digita =====
-campoSenha.addEventListener("input", function () {
-  const senha = campoSenha.value;
-  const L = senha.length;
+let temporizador;
+let ultimaConsulta = 0;
 
-  if (L === 0) {
-    console.log("campo vazio");
+campoSenha.addEventListener("input", function () {
+  clearTimeout(temporizador);
+  const senha = campoSenha.value;
+
+  if (senha === "") {
+    ultimaConsulta++;
+    limparResultado();
     return;
   }
 
-  const tipos = analisarTipos(senha);
-  const N = calcularAlfabeto(tipos);
-  const C = calcularCombinacoes(N, L);
-  const T = calcularTempo(C);
-
-  console.log("L =", L, "| N =", N, "| C =", String(C), "| T =", T, "s");
+  temporizador = setTimeout(async function () {
+    const numero = ++ultimaConsulta;
+    try {
+      const resultado = await consultarAPI(senha);
+      if (numero === ultimaConsulta) {
+        exibirResultado(resultado);
+      }
+    } catch (erro) {
+      console.error(erro);
+      if (numero === ultimaConsulta) {
+        exibirErro();
+      }
+    }
+  }, 250);
 });
 
 // ===== Botão mostrar/ocultar senha =====
