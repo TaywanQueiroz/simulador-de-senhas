@@ -39,8 +39,29 @@ function mockFormatarCombinacoes(C) {
   return mantissa + " × 10^" + (texto.length - 1);
 }
 
+const ESCALAS = [
+  [1e15, "quatrilhão", "quatrilhões"],
+  [1e12, "trilhão", "trilhões"],
+  [1e9, "bilhão", "bilhões"],
+  [1e6, "milhão", "milhões"],
+];
+
+function mockFormatarAnos(anos) {
+  if (anos >= 1e18) return "mais de 1 quintilhão de anos";
+
+  for (const [valor, singular, plural] of ESCALAS) {
+    if (anos >= valor) {
+      const q = Math.round((anos / valor) * 10) / 10;
+      return "≈ " + q.toLocaleString("pt-BR") + " " + (q === 1 ? singular : plural) + " de anos";
+    }
+  }
+
+  const n = anos >= 10 ? Math.round(anos) : Math.round(anos * 10) / 10;
+  return "≈ " + n.toLocaleString("pt-BR") + (n === 1 ? " ano" : " anos");
+}
+
 function mockFormatarTempo(T) {
-  if (!isFinite(T)) return "praticamente infinito";
+  if (!isFinite(T)) return "mais de 1 quintilhão de anos";
   if (T < 1) return "menos de 1 segundo";
 
   const unidades = [
@@ -54,10 +75,8 @@ function mockFormatarTempo(T) {
   for (const [valor, singular, plural] of unidades) {
     if (T >= valor) {
       const q = T / valor;
-      if (valor === 31536000 && q >= 1e6) {
-        const [m, e] = q.toExponential(2).split("e");
-        return "≈ " + m.replace(".", ",") + " × 10^" + Number(e) + " anos";
-      }
+      if (valor === 31536000) return mockFormatarAnos(q);
+
       const n = q >= 10 ? Math.round(q) : Math.round(q * 10) / 10;
       const texto = n.toLocaleString("pt-BR") + " " + (n === 1 ? singular : plural);
       return valor === 1 ? texto : "≈ " + texto;
